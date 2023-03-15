@@ -90,6 +90,7 @@ public:
 		if (fileDescriptor == -1)
 			return NULL;
 		// index++;
+		// openf[index++] = OpenFile(fileDescriptor, type);
 		return new OpenFile(fileDescriptor, type);
 	}
 	
@@ -132,6 +133,7 @@ public:
 							 // the disk, so initialize the directory
 							 // and the bitmap of free blocks.
 
+	bool Create(char *name);
 	bool Create(char *name, int initialSize);
 	// Create a file (UNIX creat)
 

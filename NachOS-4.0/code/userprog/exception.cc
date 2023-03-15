@@ -124,19 +124,20 @@ void ExceptionHandler(ExceptionType which)
 
 		filename = User2System(virtAddr, MaxFileLength + 1);
 		if (filename == NULL){
-			printf("\n Not enough memory in system");
+			DEBUG(dbgSys, "Not enough menu\n");
 			kernel->machine->WriteRegister(2, -1);
 
 			delete[] filename;
 			return;
 		}
-
 		if (kernel->fileSystem->Create(filename) == 0){
+			DEBUG(dbgSys, "It's OKE\n");
 			kernel->machine->WriteRegister(2, -1);
 
 			delete[] filename;
 			return;
 		}
+		DEBUG(dbgSys, "Create success\n");
 		kernel->machine->WriteRegister(2, 0);
 		
 		delete[] filename;

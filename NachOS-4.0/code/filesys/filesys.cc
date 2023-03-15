@@ -235,7 +235,7 @@ FileSystem::Create(char *name, int initialSize)
 
 OpenFile *
 FileSystem::Open(char *name)
-{ 
+{  
     Directory *directory = new Directory(NumDirEntries);
     OpenFile *openFile = NULL;
     int sector;
