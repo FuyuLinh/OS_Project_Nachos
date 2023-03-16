@@ -177,7 +177,9 @@ Lock::~Lock()
 //	Equivalent to Semaphore::P(), with the semaphore value of 0
 //	equal to busy, and semaphore value of 1 equal to free.
 //----------------------------------------------------------------------
-
+bool Lock::IsHeldByCurrentThread(){
+    return lockHolder == kernel->currentThread; 
+}
 void Lock::Acquire()
 {
     semaphore->P();

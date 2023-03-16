@@ -14,7 +14,6 @@
 #include "synchlist.h"
 #include "libtest.h"
 #include "string.h"
-#include "synchconsole.h"
 #include "synchdisk.h"
 #include "post.h"
 

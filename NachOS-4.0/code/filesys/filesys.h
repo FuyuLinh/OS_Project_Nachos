@@ -82,7 +82,6 @@ public:
 		Close(fileDescriptor);
 		return TRUE;
 	}
-
 	OpenFile *Open(char *name, int type)
 	{
 		int fileDescriptor = OpenForReadWrite(name, FALSE);
@@ -93,7 +92,7 @@ public:
 		// openf[index++] = OpenFile(fileDescriptor, type);
 		return new OpenFile(fileDescriptor, type);
 	}
-	
+
 	OpenFile *Open(char *name)
 	{
 		int fileDescriptor = OpenForReadWrite(name, FALSE);
@@ -102,8 +101,6 @@ public:
 			return NULL;
 		return new OpenFile(fileDescriptor);
 	}
-
-	
 
 	int FindFreeSlot()
 	{

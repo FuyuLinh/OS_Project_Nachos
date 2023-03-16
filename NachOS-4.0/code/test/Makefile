@@ -128,21 +128,18 @@ halt: halt.o start.o
 
 add.o: add.c
 	$(CC) $(CFLAGS) -c add.c
-
 add: add.o start.o
 	$(LD) $(LDFLAGS) start.o add.o -o add.coff
 	$(COFF2NOFF) add.coff add
 
 open.o: open.c
 	$(CC) $(CFLAGS) -c open.c
-
 open: open.o start.o
 	$(LD) $(LDFLAGS) start.o open.o -o open.coff
 	$(COFF2NOFF) open.coff open
 
 socket.o: socket.c
 	$(CC) $(CFLAGS) -c socket.c
-
 socket: socket.o start.o
 	$(LD) $(LDFLAGS) start.o socket.o -o socket.coff
 	$(COFF2NOFF) socket.coff socket

@@ -45,7 +45,6 @@ char
 SynchConsoleInput::GetChar()
 {
     char ch;
-
     lock->Acquire();
     waitFor->P();	// wait for EOF or a char to be available.
     ch = consoleInput->GetChar();
@@ -58,7 +57,36 @@ SynchConsoleInput::GetChar()
 //      Interrupt handler called when keystroke is hit; wake up
 //	anyone waiting.
 //----------------------------------------------------------------------
+int
+SynchConsoleInput::Read(char *into, int numBytes)
+{
+	int loop;
+	int eolncond = FALSE;
+	char ch;
 
+	for (loop = 0; loop < numBytes; loop++)
+		into[loop] = 0;
+
+	loop = 0;
+	while ( (loop < numBytes) && (eolncond == FALSE) )
+	{
+		ch = GetChar();
+		if ( (ch == '\012') || (ch == '\001') )
+		{
+			eolncond = TRUE;
+		}
+		else
+		{
+			into[loop] = ch;		// Put the char in buf
+			loop++;				// Auto inc
+		}
+		
+	}
+	if (ch == '\001')				// CTRL-A Returns -1
+		return -1;				// For end of stream
+	else
+		return loop;				// How many did we rd
+}
 void
 SynchConsoleInput::CallBack()
 {
@@ -111,6 +139,18 @@ SynchConsoleOutput::PutChar(char ch)
 //      Interrupt handler called when it's safe to send the next 
 //	character can be sent to the display.
 //----------------------------------------------------------------------
+int
+SynchConsoleOutput::Write(char *from, int numBytes)
+{
+	int loop;			// General purpose counter
+//	printf("[%s]:\n",currentThread->getName());	//DEBUG: Print thread
+
+	for (loop = 0; loop < numBytes; loop++)
+	{
+		PutChar(from[loop]);		// Write and wai
+	}
+	return numBytes;				// Return the bytes out
+}
 
 void
 SynchConsoleOutput::CallBack()

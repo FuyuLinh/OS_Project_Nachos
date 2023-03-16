@@ -19,13 +19,15 @@
 
 // The following two classes define synchronized input and output to
 // a console device
-
+class Lock;
+class Semaphore;
 class SynchConsoleInput : public CallBackObj {
   public:
     SynchConsoleInput(char *inputFile); // Initialize the console device
     ~SynchConsoleInput();		// Deallocate console device
 
     char GetChar();		// Read a character, waiting if necessary
+    int Read(char *into, int numBytes);
     
   private:
     ConsoleInput *consoleInput;	// the hardware keyboard
@@ -41,6 +43,7 @@ class SynchConsoleOutput : public CallBackObj {
     ~SynchConsoleOutput();
 
     void PutChar(char ch);	// Write a character, waiting if necessary
+    int Write(char *from, int numBytes);
     
   private:
     ConsoleOutput *consoleOutput;// the hardware display
