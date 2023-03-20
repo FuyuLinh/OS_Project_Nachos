@@ -325,7 +325,71 @@ void ExceptionHandler(ExceptionType which)
 				return;
 			}
 		}
+
+		case SC_Seek:
+		{
+			int pos = kernel->machine->ReadRegister(4);
+			int id = kernel->machine->ReadRegister(5);
+
+			if (id >= 20 || id < 0){
+				DEBUG(dbgSys, "Exceed number of file that can be opened\n");
+				kernel->machine->WriteRegister(2, -1);
+
+				return;
+			}
 			
+			if (id == 0 || id == 1){
+				DEBUG(dbgSys, "Cannot seek on console\n");
+				kernel->machine->WriteRegister(2, -1);
+
+				return;
+			}
+
+			OpenFile *openfile = kernel->fileSystem->openf[id];
+			if (openfile == NULL){
+				DEBUG(dbgSys, "File is not opened\n");
+				kernel->machine->WriteRegister(2, -1);
+				return;
+			}
+
+			int fileLength = openfile->Length();
+			pos = (pos == -1)? fileLength : pos;
+
+			if (fileLength < pos || pos < 0){
+				DEBUG(dbgSys, "Position exceeds file\n");
+				kernel->machine->WriteRegister(2, -1);
+
+				delete openfile;
+				return;
+			}
+
+			OpenFile* f = kernel->fileSystem->openf[id];
+			f->Seek(pos);
+			kernel->machine->WriteRegister(2, f->GetCurrentOffSet());
+
+			break;
+		}
+
+		case SC_Remove:
+		{
+			int virtAddr;
+			char* filename = NULL;
+
+			virtAddr = kernel->machine->ReadRegister(4);
+
+			filename = User2System(virtAddr, MaxFileLength + 1);
+			
+			if (kernel->fileSystem->Remove(filename) == 0){
+				kernel->machine->WriteRegister(2, -1);
+				delete[] filename;
+				return;
+			}
+			DEBUG(dbgSys, "Delete success\n");
+			kernel->machine->WriteRegister(2, 0);
+			
+			delete[] filename;
+			break;
+		}
 		case SC_Socket:
 		{
 			if (socket(AF_INET, SOCK_STREAM, 0) < 0)
