@@ -112,7 +112,7 @@ ifeq ($(hosttype),unknown)
 PROGRAMS = unknownhost
 else
 # change this if you create a new test program!
-PROGRAMS = add halt shell matmult sort segments
+PROGRAMS = add halt shell matmult sort segments createfile echoclient
 endif
 
 all: $(PROGRAMS)
@@ -132,17 +132,11 @@ add: add.o start.o
 	$(LD) $(LDFLAGS) start.o add.o -o add.coff
 	$(COFF2NOFF) add.coff add
 
-open.o: open.c
-	$(CC) $(CFLAGS) -c open.c
-open: open.o start.o
-	$(LD) $(LDFLAGS) start.o open.o -o open.coff
-	$(COFF2NOFF) open.coff open
-
-socket.o: socket.c
-	$(CC) $(CFLAGS) -c socket.c
-socket: socket.o start.o
-	$(LD) $(LDFLAGS) start.o socket.o -o socket.coff
-	$(COFF2NOFF) socket.coff socket
+cat.o: cat.c
+	$(CC) $(CFLAGS) -c cat.c
+cat: cat.o start.o
+	$(LD) $(LDFLAGS) start.o cat.o -o cat.coff
+	$(COFF2NOFF) cat.coff cat
 
 shell.o: shell.c
 	$(CC) $(CFLAGS) -c shell.c
@@ -173,6 +167,12 @@ createfile.o: createfile.c
 createfile: createfile.o start.o
 	$(LD) $(LDFLAGS) start.o createfile.o -o createfile.coff
 	$(COFF2NOFF) createfile.coff createfile
+
+echoclient.o: echoclient.c
+	$(CC) $(CFLAGS) -c echoclient.c
+echoclient: echoclient.o start.o
+	$(LD) $(LDFLAGS) start.o echoclient.o -o echoclient.coff
+	$(COFF2NOFF) echoclient.coff echoclient
 
 clean:
 	$(RM) -f *.o *.ii

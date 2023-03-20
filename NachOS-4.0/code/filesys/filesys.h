@@ -50,9 +50,9 @@ public:
 	// Dinh nghia lai ham khoi tao cua FileSystem
 	FileSystem()
 	{
-		openf = new OpenFile *[15];
+		openf = new OpenFile *[20];
 		index = 0;
-		for (int i = 0; i < 15; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			openf[i] = NULL;
 		}
@@ -65,7 +65,7 @@ public:
 	// Ham huy doi tuong FileSystem
 	~FileSystem()
 	{
-		for (int i = 0; i < 15; ++i)
+		for (int i = 0; i < 20; ++i)
 		{
 			if (openf[i] != NULL)
 				delete openf[i];
@@ -104,7 +104,7 @@ public:
 
 	int FindFreeSlot()
 	{
-		for (int i = 2; i < 15; i++)
+		for (int i = 2; i < 20; i++)
 		{
 			if (openf[i] == NULL)
 				return i;
@@ -130,6 +130,7 @@ public:
 							 // the disk, so initialize the directory
 							 // and the bitmap of free blocks.
 
+	~FileSystem();
 	bool Create(char *name);
 	bool Create(char *name, int initialSize);
 	// Create a file (UNIX creat)

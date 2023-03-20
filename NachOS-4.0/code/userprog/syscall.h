@@ -23,11 +23,11 @@
 #define SC_Exec		2
 #define SC_Join		3
 #define SC_Create	4
-#define SC_Remove       5
+#define SC_Remove   5
 #define SC_Open		6
 #define SC_Read		7
 #define SC_Write	8
-#define SC_Seek         9
+#define SC_Seek     9
 #define SC_Close	10
 #define SC_ThreadFork	11
 #define SC_ThreadYield	12
@@ -37,8 +37,11 @@
 
 #define SC_Add		42
 
-#define SC_Socket 50
+#define SC_SocketTCP 50
 #define SC_Connect 51
+#define SC_Send 52
+#define SC_Receive 53
+#define SC_CloseSocket 54
 
 #ifndef IN_ASM
 
@@ -178,6 +181,34 @@ int ThreadJoin(ThreadId id);
  * Deletes current thread and returns ExitCode to every waiting lokal thread.
  */
 void ThreadExit(int ExitCode);	
+
+// All ports below 1024 are considered well known, reserved for standard services; shouldn't use them.
+/*
+ * Send data via socket
+ */
+int Send(int socketid, char*buffer, int len);
+
+/*
+ * Receive data via socket
+ */
+int Receive(int socketid, char* buffer, int len);
+
+/*
+ * Connect to server via ip and port
+*/
+int Connect(int socketid, char *ip, int port);
+
+/*
+ * Create socket
+*/
+
+int SocketTCP();
+
+/*
+ * Close socket
+ */
+
+int CloseSocket1(int socketid);
 
 #endif /* IN_ASM */
 
